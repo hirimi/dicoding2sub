@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">core</string>
+    <string name="poster">Poster</string>
+    <string name="favorite">Favorites</string>
+    <string name="movie_name">Load …</string>
+    <string name="tv_des">Load Synopsis …</string>
+    <string name="overview">Synopsis</string>
+    <string name="tv_rate">Load …</string>
+    <string name="movies">Movies</string>
+</resources>
