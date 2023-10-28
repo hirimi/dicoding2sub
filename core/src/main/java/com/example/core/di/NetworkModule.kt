@@ -1,6 +1,12 @@
 package com.example.core.di
 
+import com.example.core.BuildConfig
 import com.example.core.retrofit.ApiService
+import com.example.core.utils.SharedObject.BASE_URL
+import com.example.core.utils.SharedObject.certificatePinner1
+import com.example.core.utils.SharedObject.certificatePinner2
+import com.example.core.utils.SharedObject.certificatePinner3
+import com.example.core.utils.SharedObject.hostname
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,14 +24,23 @@ class NetworkModule {
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        val hostname = "themoviedb.org"
+        val hostname = hostname
         val certificatePinner = CertificatePinner.Builder()
-            .add(hostname, "sha256/5VLcahb6x4EvvFrCF2TePZulWqrLHS2jCg9Ywv6JHog=")
-            .add(hostname, "sha256/vxRon/El5KuI4vx5ey1DgmsYmRY0nDd5Cg4GfJ8S+bg=")
-            .add(hostname, "sha256/++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI=")
+            .add(hostname, certificatePinner1)
+            .add(hostname, certificatePinner2)
+            .add(hostname, certificatePinner3)
             .build()
+
         return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .addInterceptor(
+                HttpLoggingInterceptor().setLevel(
+                    if (BuildConfig.DEBUG) {
+                        HttpLoggingInterceptor.Level.BODY
+                    } else {
+                        HttpLoggingInterceptor.Level.NONE
+                    }
+                )
+            )
             .connectTimeout(120, TimeUnit.SECONDS)
             .readTimeout(120, TimeUnit.SECONDS)
             .certificatePinner(certificatePinner)
@@ -33,11 +48,11 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideApiService(client: OkHttpClient): ApiService {
+    fun provideApiService(): ApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
+            .client(provideOkHttpClient())
             .build()
 
         return retrofit.create(ApiService::class.java)
