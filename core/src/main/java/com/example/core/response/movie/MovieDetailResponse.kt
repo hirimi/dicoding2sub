@@ -1,7 +1,10 @@
 package com.example.core.response.movie
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class MovieDetailResponse(
     @field:SerializedName("id")
     val id: Int,
@@ -23,4 +26,4 @@ data class MovieDetailResponse(
 
     @field:SerializedName("vote_count")
     val votecount: Int
-)
+): Parcelable
