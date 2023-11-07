@@ -1,5 +1,6 @@
 package com.example.core.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +16,14 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
     private var listFavoriteMovies = ArrayList<Movies>()
     var onItemClick: ((Movies) -> Unit)? = null
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(favoriteMovieList: List<Movies>?){
         if (favoriteMovieList == null) return
         listFavoriteMovies.clear()
         listFavoriteMovies.addAll(favoriteMovieList)
         notifyDataSetChanged()
     }
+
 
     inner class MovieHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemRowBinding.bind(itemView)

@@ -1,5 +1,6 @@
 package com.example.core.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ class TvAdapter: RecyclerView.Adapter<TvAdapter.TvShowsHolder>() {
     private var listFavoriteTvShows = ArrayList<TvShows>()
     var onItemClick: ((TvShows) -> Unit)? = null
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(favoriteTvShows: List<TvShows>?){
         if (favoriteTvShows == null) return
         listFavoriteTvShows.clear()
